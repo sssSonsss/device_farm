@@ -9,7 +9,7 @@ services:
 
   stf:
     container_name: stf
-    image: devicefarmer/stf:latest
+    image: stf-devicefarm:latest
     ports:
       - "7100:7100"
       - "7110:7110"

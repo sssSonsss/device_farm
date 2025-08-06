@@ -131,12 +131,15 @@ services:
     environment:
       - RETHINKDB_PORT_28015_TCP=tcp://rethinkdb:28015
       - RETHINKDB_ENV_DATABASE=stf
+      - APP_URL=http://172.20.10.2:8081
+      - AUTH_URL=http://172.20.10.2:8081/auth/mock/
+      - WEBSOCKET_URL=ws://172.20.10.2:8081/ws/
     ports:
       - "7105:7105"
     command: >
       stf app --port 7105 
-              --auth-url http://172.20.10.2:7120/auth/mock/ 
-              --websocket-url ws://172.20.10.2:3600/ 
+              --auth-url http://172.20.10.2:8081/auth/mock/ 
+              --websocket-url ws://172.20.10.2:8081/ws/ 
               --secret your_session_secret
     restart: unless-stopped
     networks:

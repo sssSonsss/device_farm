@@ -39,7 +39,7 @@ module.exports = function SocketFactory(
   })
 
   socket.on('socket.ip', function(ip) {
-    $rootScope.$apply(function() {
+    $rootScope.safeApply(function() {
       socket.ip = ip
     })
   })

@@ -290,7 +290,7 @@ module.exports = function DeviceScreenDirective(
             if (message.data instanceof Blob) {
               if (shouldUpdateScreen()) {
                 if (scope.displayError) {
-                  scope.$apply(function() {
+                  scope.safeApply(function() {
                     scope.displayError = false
                   })
                 }
@@ -343,7 +343,7 @@ module.exports = function DeviceScreenDirective(
               applyQuirks(JSON.parse(message.data.substr('start '.length)))
             }
             else if (message.data === 'secure_on') {
-              scope.$apply(function() {
+              scope.safeApply(function() {
                 scope.displayError = 'secure'
               })
             }

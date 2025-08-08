@@ -40,7 +40,7 @@ module.exports = function UserServiceFactory(
   socket.on('user.keys.adb.added', function(key) {
     UserService.getAdbKeys().push(key)
     $rootScope.$broadcast('user.keys.adb.updated', user.adbKeys)
-    $rootScope.$apply()
+    $rootScope.safeApply()
   })
 
   socket.on('user.keys.adb.removed', function(key) {
@@ -48,7 +48,7 @@ module.exports = function UserServiceFactory(
       return someKey.fingerprint !== key.fingerprint
     })
     $rootScope.$broadcast('user.keys.adb.updated', user.adbKeys)
-    $rootScope.$apply()
+    $rootScope.safeApply()
   })
 
   socket.on('user.keys.adb.confirm', function(data) {

@@ -90,17 +90,17 @@ module.exports = function DevicesServiceFactory(
 
   socket.on('user.settings.devices.created', function(device) {
     $rootScope.$broadcast('user.settings.devices.created', device)
-    $rootScope.$apply()
+    $rootScope.safeApply()
   })
 
   socket.on('user.settings.devices.deleted', function(device) {
     $rootScope.$broadcast('user.settings.devices.deleted', device)
-    $rootScope.$apply()
+    $rootScope.safeApply()
   })
 
   socket.on('user.settings.devices.updated', function(device) {
     $rootScope.$broadcast('user.settings.devices.updated', device)
-    $rootScope.$apply()
+    $rootScope.safeApply()
   })
 
   return DevicesService

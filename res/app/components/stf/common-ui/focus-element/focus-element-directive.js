@@ -14,7 +14,7 @@ module.exports = function focusElementDirective($parse, $timeout) {
 
       element.bind('blur', function() {
         if (model && model.assign) {
-          scope.$apply(model.assign(scope, false))
+          scope.safeApply(model.assign(scope, false))
         }
       })
     }

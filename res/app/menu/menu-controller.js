@@ -60,29 +60,38 @@ module.exports = function MenuCtrl(
   , level: ''
   }
 
-  if (AppState.user.privilege === 'admin') {
-    $scope.alertMessage = SettingsService.get('alertMessage')
+  // Add safety check for AppState.user
+  if (AppState.user && AppState.user.privilege === 'admin') {
+    const settingsAlertMessage = SettingsService.get('alertMessage');
+    if (settingsAlertMessage) {
+      $scope.alertMessage = settingsAlertMessage;
+    }
   }
-  else {
+  else if (AppState.user) {
     UsersService.getUsersAlertMessage().then(function(response) {
-      $scope.alertMessage = response.data.alertMessage
-    })
+      if (response && response.data && response.data.alertMessage) {
+        $scope.alertMessage = response.data.alertMessage;
+      }
+    }).catch(function(error) {
+      console.warn('Failed to get users alert message:', error);
+    });
   }
 
+  // Add safety check for alertMessage functions
   $scope.isAlertMessageActive = function() {
-    return $scope.alertMessage.activation === 'True'
+    return $scope.alertMessage && $scope.alertMessage.activation === 'True';
   }
 
   $scope.isInformationAlert = function() {
-    return $scope.alertMessage.level === 'Information'
+    return $scope.alertMessage && $scope.alertMessage.level === 'Information';
   }
 
   $scope.isWarningAlert = function() {
-    return $scope.alertMessage.level === 'Warning'
+    return $scope.alertMessage && $scope.alertMessage.level === 'Warning';
   }
 
   $scope.isCriticalAlert = function() {
-    return $scope.alertMessage.level === 'Critical'
+    return $scope.alertMessage && $scope.alertMessage.level === 'Critical';
   }
 
   $scope.$on('user.menu.users.updated', function(event, message) {

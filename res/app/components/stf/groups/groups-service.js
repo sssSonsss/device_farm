@@ -152,32 +152,32 @@ module.exports = function GroupsServiceFactory(
   }
   socket.on('user.settings.groups.created', function(group) {
     $rootScope.$broadcast('user.settings.groups.created', group)
-    $rootScope.$apply()
+    $rootScope.safeApply()
   })
 
   socket.on('user.settings.groups.deleted', function(group) {
     $rootScope.$broadcast('user.settings.groups.deleted', group)
-    $rootScope.$apply()
+    $rootScope.safeApply()
   })
 
   socket.on('user.settings.groups.updated', function(group) {
     $rootScope.$broadcast('user.settings.groups.updated', group)
-    $rootScope.$apply()
+    $rootScope.safeApply()
   })
 
   socket.on('user.view.groups.created', function(group) {
     $rootScope.$broadcast('user.view.groups.created', group)
-    $rootScope.$apply()
+    $rootScope.safeApply()
   })
 
   socket.on('user.view.groups.deleted', function(group) {
     $rootScope.$broadcast('user.view.groups.deleted', group)
-    $rootScope.$apply()
+    $rootScope.safeApply()
   })
 
   socket.on('user.view.groups.updated', function(group) {
     $rootScope.$broadcast('user.view.groups.updated', group)
-    $rootScope.$apply()
+    $rootScope.safeApply()
   })
 
   return GroupsService

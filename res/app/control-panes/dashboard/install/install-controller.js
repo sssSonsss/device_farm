@@ -28,7 +28,7 @@ module.exports = function InstallCtrl(
     // TODO: After clicking uninstall accordion opens
     return $scope.control.uninstall(packageName)
       .then(function() {
-        $scope.$apply(function() {
+        $scope.safeApply(function() {
           $scope.clear()
         })
       })

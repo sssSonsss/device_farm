@@ -40,7 +40,7 @@ module.exports = function SocketStateDirectiveFactory(
           break
         }
 
-        scope.$apply(function() {
+        scope.safeApply(function() {
           scope.socketState = state
         })
       }

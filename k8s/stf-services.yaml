@@ -1,0 +1,82 @@
+# STF Auth Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: stf-auth
+  namespace: stf-devicefarm
+  labels:
+    app: stf-auth
+spec:
+  ports:
+  - port: 7120
+    targetPort: 7120
+    name: http
+  selector:
+    app: stf-auth
+---
+# STF App Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: stf-app
+  namespace: stf-devicefarm
+  labels:
+    app: stf-app
+spec:
+  ports:
+  - port: 7105
+    targetPort: 7105
+    name: http
+  selector:
+    app: stf-app
+---
+# STF API Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: stf-api
+  namespace: stf-devicefarm
+  labels:
+    app: stf-api
+spec:
+  ports:
+  - port: 3000
+    targetPort: 3000
+    name: http
+  selector:
+    app: stf-api
+---
+# STF WebSocket Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: stf-websocket
+  namespace: stf-devicefarm
+  labels:
+    app: stf-websocket
+spec:
+  ports:
+  - port: 3000
+    targetPort: 3000
+    name: http
+  selector:
+    app: stf-websocket
+---
+# STF Provider Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: stf-provider
+  namespace: stf-devicefarm
+  labels:
+    app: stf-provider
+spec:
+  ports:
+  - port: 15000
+    targetPort: 15000
+    name: provider-start
+  - port: 15100
+    targetPort: 15100
+    name: provider-end
+  selector:
+    app: stf-provider

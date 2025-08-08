@@ -14,7 +14,7 @@ module.exports = function addAdbKeyDirective(AdbKeysService) {
       }
 
       $scope.$on('user.keys.adb.error', function(event, error) {
-        $scope.$apply(function() {
+        $scope.safeApply(function() {
           $scope.error = error.message
         })
       })

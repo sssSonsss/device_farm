@@ -15,7 +15,7 @@ module.exports = function DeviceListEmptyDirective() {
         var newEmpty = !tracker.devices.length
 
         if (oldEmpty !== newEmpty) {
-          scope.$apply(function() {
+          scope.safeApply(function() {
             scope.empty = newEmpty
           })
         }

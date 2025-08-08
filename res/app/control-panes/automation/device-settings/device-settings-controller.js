@@ -6,7 +6,7 @@ module.exports = function DeviceSettingsCtrl($scope, $timeout) {
   function getWifiStatus() {
     if ($scope.control) {
       $scope.control.getWifiStatus().then(function(result) {
-        $scope.$apply(function() {
+        $scope.safeApply(function() {
           $scope.wifiEnabled = (result.lastData === 'wifi_enabled')
         })
       })
@@ -26,7 +26,7 @@ module.exports = function DeviceSettingsCtrl($scope, $timeout) {
       $scope.bluetoothPending = true
       $scope.control.getBluetoothStatus()
         .then(function(result) {
-          $scope.$apply(function() {
+          $scope.safeApply(function() {
             $scope.bluetoothEnabled = (result.lastData === 'bluetooth_enabled')
           })
       })
@@ -67,7 +67,7 @@ module.exports = function DeviceSettingsCtrl($scope, $timeout) {
   function getRingerMode() {
     if ($scope.control) {
       $scope.control.getRingerMode().then(function(result) {
-        $scope.$apply(function() {
+        $scope.safeApply(function() {
           $scope.ringerMode = result.body
         })
       })

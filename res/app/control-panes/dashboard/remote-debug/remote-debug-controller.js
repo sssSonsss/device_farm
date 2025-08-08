@@ -3,7 +3,7 @@ module.exports = function RemoteDebugCtrl($scope, $timeout, gettext) {
     if ($scope.control) {
       $scope.control.startRemoteConnect().then(function(result) {
         var url = result.lastData
-        $scope.$apply(function() {
+        $scope.safeApply(function() {
           $scope.debugCommand = 'adb connect ' + url
         })
       })

@@ -78,27 +78,27 @@ module.exports = function UsersServiceFactory(
 
   socket.on('user.settings.users.created', function(user) {
     $rootScope.$broadcast('user.settings.users.created', user)
-    $rootScope.$apply()
+    $rootScope.safeApply()
   })
 
   socket.on('user.settings.users.deleted', function(user) {
     $rootScope.$broadcast('user.settings.users.deleted', user)
-    $rootScope.$apply()
+    $rootScope.safeApply()
   })
 
   socket.on('user.view.users.updated', function(user) {
     $rootScope.$broadcast('user.view.users.updated', user)
-    $rootScope.$apply()
+    $rootScope.safeApply()
   })
 
   socket.on('user.settings.users.updated', function(user) {
     $rootScope.$broadcast('user.settings.users.updated', user)
-    $rootScope.$apply()
+    $rootScope.safeApply()
   })
 
   socket.on('user.menu.users.updated', function(user) {
     $rootScope.$broadcast('user.menu.users.updated', user)
-    $rootScope.$apply()
+    $rootScope.safeApply()
   })
 
   return UsersService

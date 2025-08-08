@@ -13,7 +13,7 @@ module.exports = function blurElementDirective($parse, $timeout) {
       })
 
       element.bind('blur', function() {
-        scope.$apply(model.assign(scope, false))
+        scope.safeApply(model.assign(scope, false))
       })
     }
   }

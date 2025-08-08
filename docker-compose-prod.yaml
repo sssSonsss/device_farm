@@ -107,7 +107,7 @@ services:
     command: >
       stf auth-mock --port 7120 
                     --secret 12341234 
-                    --app-url http://stf-app:7105/
+                    --app-url http://10.28.146.50:8081/
     ports:
       - "7120:7120"
     environment:
@@ -131,16 +131,16 @@ services:
     environment:
       - RETHINKDB_PORT_28015_TCP=tcp://rethinkdb:28015
       - RETHINKDB_ENV_DATABASE=stf
-      - APP_URL=http://172.20.10.2:8081
-      - AUTH_URL=http://172.20.10.2:8081/auth/mock/
-      - WEBSOCKET_URL=ws://172.20.10.2:8081/ws/
+      - APP_URL=http://10.28.146.50:8081
+      - AUTH_URL=http://10.28.146.50:8081/auth/mock/
+      - WEBSOCKET_URL=ws://10.28.146.50:8081/ws/
     ports:
       - "7105:7105"
     command: >
       stf app --port 7105 
-              --auth-url http://172.20.10.2:8081/auth/mock/ 
-              --websocket-url ws://172.20.10.2:8081/ws/ 
-              --secret your_session_secret
+              --auth-url http://10.28.146.50:8081/auth/mock/ 
+              --websocket-url ws://10.28.146.50:8081/ws/ 
+              --secret 12341234
     restart: unless-stopped
     networks:
       - stf-network
@@ -161,10 +161,10 @@ services:
       - "3600:3000"
     command: >
       stf websocket --port 3000 
-                    --storage-url http://stf-app:7105/ 
-                    --connect-push tcp://172.20.10.2:7170 
-                    --connect-sub tcp://172.20.10.2:7150 
-                    --secret your_session_secret
+                    --storage-url http://10.28.146.50:8081/ 
+                    --connect-push tcp://10.28.146.50:7170 
+                    --connect-sub tcp://10.28.146.50:7150 
+                    --secret 12341234
     restart: unless-stopped
     networks:
       - stf-network
@@ -183,11 +183,11 @@ services:
       - "3700:3000"
     command: >
       stf api --port 3000 
-              --connect-push tcp://172.20.10.2:7170 
-              --connect-sub tcp://172.20.10.2:7150 
-              --connect-push-dev tcp://172.20.10.2:7270 
-              --connect-sub-dev tcp://172.20.10.2:7250 
-              --secret your_session_secret
+              --connect-push tcp://10.28.146.50:7170 
+              --connect-sub tcp://10.28.146.50:7150 
+              --connect-push-dev tcp://10.28.146.50:7270 
+              --connect-sub-dev tcp://10.28.146.50:7250 
+              --secret 12341234
     restart: unless-stopped
     networks:
       - stf-network
@@ -206,11 +206,11 @@ services:
     command: >
       stf provider --name "local-provider" 
                    --adb-host adb 
-                   --public-ip 172.20.10.2 
+                   --public-ip 10.28.146.50 
                    --min-port=15000 --max-port=15100 
-                   --connect-push tcp://172.20.10.2:7270 
-                   --connect-sub tcp://172.20.10.2:7250 
-                   --storage-url http://stf-app:7105/
+                   --connect-push tcp://10.28.146.50:7270 
+                   --connect-sub tcp://10.28.146.50:7250 
+                   --storage-url http://10.28.146.50:8081/
     restart: unless-stopped
     networks:
       - stf-network

@@ -119,7 +119,7 @@ module.exports = function ControlServiceFactory(
     var that = this
     this.getClipboardContent = function() {
       that.copy().then(function(result) {
-        $rootScope.$apply(function() {
+        $rootScope.safeApply(function() {
           if (result.success) {
             if (result.lastData) {
               that.clipboardContent = result.lastData

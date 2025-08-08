@@ -27,12 +27,12 @@ module.exports = function AccessTokenServiceFactory(
 
   socket.on('user.keys.accessToken.generated', function(token) {
     $rootScope.$broadcast('user.keys.accessTokens.generated', token)
-    $rootScope.$apply()
+    $rootScope.safeApply()
   })
 
   socket.on('user.keys.accessToken.updated', function() {
     $rootScope.$broadcast('user.keys.accessTokens.updated')
-    $rootScope.$apply()
+    $rootScope.safeApply()
   })
 
   return AccessTokenService

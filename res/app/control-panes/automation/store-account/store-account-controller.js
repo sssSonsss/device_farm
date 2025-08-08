@@ -42,7 +42,7 @@ module.exports = function StoreAccountCtrl($scope, ngTableParams, $timeout) {
     var storeAccountType = $scope.deviceAppStores[$scope.currentAppStore].package
     if ($scope.control) {
       $scope.control.getAccounts(storeAccountType).then(function(result) {
-        $scope.$apply(function() {
+        $scope.safeApply(function() {
           $scope.accountsList = result.body
         })
       })

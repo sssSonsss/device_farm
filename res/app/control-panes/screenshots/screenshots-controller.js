@@ -16,7 +16,7 @@ module.exports = function ScreenshotsCtrl($scope) {
 
   $scope.takeScreenShot = function() {
     $scope.control.screenshot().then(function(result) {
-      $scope.$apply(function() {
+      $scope.safeApply(function() {
         $scope.screenshots.unshift(result)
       })
     })

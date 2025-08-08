@@ -1,0 +1,253 @@
+# STF Auth Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stf-auth
+  namespace: stf-devicefarm
+  labels:
+    app: stf-auth
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: stf-auth
+  template:
+    metadata:
+      labels:
+        app: stf-auth
+    spec:
+      containers:
+      - name: stf-auth
+        image: stf-devicefarm:latest
+        ports:
+        - containerPort: 7120
+          name: http
+        command: ["stf", "auth-mock", "--port", "7120", "--secret", "12341234", "--app-url", "http://stf-app:7105/"]
+        env:
+        - name: RETHINKDB_PORT_28015_TCP
+          value: "tcp://stf-rethinkdb:28015"
+        - name: RETHINKDB_ENV_DATABASE
+          value: "stf"
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "100m"
+          limits:
+            memory: "512Mi"
+            cpu: "200m"
+        livenessProbe:
+          httpGet:
+            path: /auth/mock/
+            port: 7120
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /auth/mock/
+            port: 7120
+          initialDelaySeconds: 10
+          periodSeconds: 5
+---
+# STF App Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stf-app
+  namespace: stf-devicefarm
+  labels:
+    app: stf-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: stf-app
+  template:
+    metadata:
+      labels:
+        app: stf-app
+    spec:
+      containers:
+      - name: stf-app
+        image: stf-devicefarm:latest
+        ports:
+        - containerPort: 7105
+          name: http
+        command: ["stf", "app", "--port", "7105", "--auth-url", "http://stf-auth:7120/auth/mock/", "--websocket-url", "ws://stf-websocket:3000/", "--secret", "your_session_secret"]
+        env:
+        - name: RETHINKDB_PORT_28015_TCP
+          value: "tcp://stf-rethinkdb:28015"
+        - name: RETHINKDB_ENV_DATABASE
+          value: "stf"
+        - name: APP_URL
+          value: "http://10.28.146.50:8081"
+        - name: AUTH_URL
+          value: "http://10.28.146.50:8081/auth/mock/"
+        - name: WEBSOCKET_URL
+          value: "ws://10.28.146.50:8081/ws/"
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "200m"
+          limits:
+            memory: "1Gi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 7105
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 7105
+          initialDelaySeconds: 10
+          periodSeconds: 5
+---
+# STF API Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stf-api
+  namespace: stf-devicefarm
+  labels:
+    app: stf-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: stf-api
+  template:
+    metadata:
+      labels:
+        app: stf-api
+    spec:
+      containers:
+      - name: stf-api
+        image: stf-devicefarm:latest
+        ports:
+        - containerPort: 3000
+          name: http
+        command: ["stf", "api", "--port", "3000", "--connect-push", "tcp://10.28.146.50:7170", "--connect-sub", "tcp://10.28.146.50:7150", "--connect-push-dev", "tcp://10.28.146.50:7270", "--connect-sub-dev", "tcp://10.28.146.50:7250", "--secret", "your_session_secret"]
+        env:
+        - name: RETHINKDB_PORT_28015_TCP
+          value: "tcp://stf-rethinkdb:28015"
+        - name: RETHINKDB_ENV_DATABASE
+          value: "stf"
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "100m"
+          limits:
+            memory: "512Mi"
+            cpu: "200m"
+        livenessProbe:
+          httpGet:
+            path: /api/v1/users
+            port: 3000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /api/v1/users
+            port: 3000
+          initialDelaySeconds: 10
+          periodSeconds: 5
+---
+# STF WebSocket Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stf-websocket
+  namespace: stf-devicefarm
+  labels:
+    app: stf-websocket
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: stf-websocket
+  template:
+    metadata:
+      labels:
+        app: stf-websocket
+    spec:
+      containers:
+      - name: stf-websocket
+        image: stf-devicefarm:latest
+        ports:
+        - containerPort: 3000
+          name: http
+        command: ["stf", "websocket", "--port", "3000", "--storage-url", "http://10.28.146.50:8081/", "--connect-push", "tcp://172.20.10.2:7170", "--connect-sub", "tcp://172.20.10.2:7150", "--secret", "your_session_secret"]
+        env:
+        - name: RETHINKDB_PORT_28015_TCP
+          value: "tcp://stf-rethinkdb:28015"
+        - name: RETHINKDB_ENV_DATABASE
+          value: "stf"
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "100m"
+          limits:
+            memory: "512Mi"
+            cpu: "200m"
+        livenessProbe:
+          tcpSocket:
+            port: 3000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          tcpSocket:
+            port: 3000
+          initialDelaySeconds: 10
+          periodSeconds: 5
+---
+# STF Provider Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stf-provider
+  namespace: stf-devicefarm
+  labels:
+    app: stf-provider
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: stf-provider
+  template:
+    metadata:
+      labels:
+        app: stf-provider
+    spec:
+      containers:
+      - name: stf-provider
+        image: stf-devicefarm:latest
+        ports:
+        - containerPort: 15000
+          name: provider-start
+        - containerPort: 15100
+          name: provider-end
+        command: ["stf", "provider", "--name", "local-provider", "--adb-host", "adb", "--public-ip", "10.28.146.50", "--min-port=15000", "--max-port=15100", "--connect-push", "tcp://10.28.146.50:7270", "--connect-sub", "tcp://10.28.146.50:7250", "--storage-url", "http://10.28.146.50:8081/"]
+        env:
+        - name: RETHINKDB_PORT_28015_TCP
+          value: "tcp://stf-rethinkdb:28015"
+        - name: RETHINKDB_ENV_DATABASE
+          value: "stf"
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "200m"
+          limits:
+            memory: "1Gi"
+            cpu: "500m"
+        livenessProbe:
+          tcpSocket:
+            port: 15000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          tcpSocket:
+            port: 15000
+          initialDelaySeconds: 10
+          periodSeconds: 5

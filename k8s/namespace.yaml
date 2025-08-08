@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: stf-devicefarm
+  labels:
+    name: stf-devicefarm
+    app: stf

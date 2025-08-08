@@ -5,6 +5,7 @@
 *.iml
 .python-version
 /*.tgz
+/*.tar.gz
 /.env
 /node_modules/
 /res/bower_components/

@@ -6,8 +6,8 @@
 .idea/
 node_modules/
 npm-debug.log
-res/bower_components/
-res/build/
+# res/bower_components/
+# res/build/
 rethinkdb_data/
 temp/
 tmp/

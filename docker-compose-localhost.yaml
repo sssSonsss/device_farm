@@ -25,7 +25,23 @@ services:
     networks:
       - stf-network
 
-  # 2. ADB Service - Required for device connection
+  # 2. Database Migration Service - Must run after rethinkdb
+  stf-migrate:
+    image: stf-devicefarm-fixed
+    container_name: stf-migrate
+    depends_on:
+      rethinkdb:
+        condition: service_healthy
+    environment:
+      - RETHINKDB_PORT_28015_TCP=tcp://rethinkdb:28015
+      - RETHINKDB_ENV_DATABASE=stf
+    command: >
+      stf migrate
+    restart: "no"
+    networks:
+      - stf-network
+
+  # 3. ADB Service - Required for device connection
   adb:
     container_name: adb
     image: devicefarmer/adb:latest
@@ -114,8 +130,8 @@ services:
       - RETHINKDB_PORT_28015_TCP=tcp://rethinkdb:28015
       - RETHINKDB_ENV_DATABASE=stf
     depends_on:
-      rethinkdb:
-        condition: service_healthy
+      stf-migrate:
+        condition: service_completed_successfully
     networks:
       - stf-network
 
@@ -124,8 +140,8 @@ services:
     image: stf-devicefarm-fixed
     container_name: stf-app
     depends_on:
-      rethinkdb:
-        condition: service_healthy
+      stf-migrate:
+        condition: service_completed_successfully
       stf-auth:
         condition: service_started
     environment:
@@ -147,8 +163,8 @@ services:
     image: stf-devicefarm-fixed
     container_name: stf-websocket
     depends_on:
-      rethinkdb:
-        condition: service_healthy
+      stf-migrate:
+        condition: service_completed_successfully
       stf-app:
         condition: service_started
     environment:
@@ -171,8 +187,8 @@ services:
     image: stf-devicefarm-fixed
     container_name: stf-api
     depends_on:
-      rethinkdb:
-        condition: service_healthy
+      stf-migrate:
+        condition: service_completed_successfully
     environment:
       - RETHINKDB_PORT_28015_TCP=tcp://rethinkdb:28015
       - RETHINKDB_ENV_DATABASE=stf
@@ -196,8 +212,8 @@ services:
     depends_on:
       adb:
         condition: service_started
-      rethinkdb:
-        condition: service_healthy
+      stf-migrate:
+        condition: service_completed_successfully
     ports:
       - "15000-15100:15000-15100"
     command: >

@@ -15,13 +15,13 @@ module.exports = {
     , context: __dirname
     , cache: true
     , entry: {
-      app: pathutil.resource('app/app.js')
-      , authldap: pathutil.resource('auth/ldap/scripts/entry.js')
-      , authmock: pathutil.resource('auth/mock/scripts/entry.js')
+      app: ['jquery', pathutil.resource('app/app.js')]
+      , authldap: ['jquery', pathutil.resource('auth/ldap/scripts/entry.js')]
+      , authmock: ['jquery', pathutil.resource('auth/mock/scripts/entry.js')]
     }
     , output: {
-      path: require('path').resolve(__dirname, 'static/app/build')
-      , publicPath: '/static/app/build/'
+      path: require('path').resolve(__dirname, 'res/app/build')
+      , publicPath: 'http://localhost:7105/static/app/build/'
       , filename: 'entry/[name].entry.js'
       , chunkFilename: '[id].[hash].chunk.js'
     }
@@ -40,6 +40,7 @@ module.exports = {
       , extensions: ['.js', '.json']
       ,
       alias: {
+        'jquery': 'jquery',
         'ui-bootstrap': path.resolve(__dirname, 'res/bower_components/angular-bootstrap/ui-bootstrap.js'),
         'ui-bootstrap-tpls': path.resolve(__dirname, 'res/bower_components/angular-bootstrap/ui-bootstrap-tpls.js'),
         'nine-bootstrap': path.resolve(__dirname, 'res/bower_components/bootstrap/dist/js/bootstrap.js'),
@@ -105,6 +106,11 @@ module.exports = {
       ]
     }
     , plugins: [
+      new webpack.ProvidePlugin({
+        $: 'jquery',
+        jQuery: 'jquery',
+        'window.jQuery': 'jquery'
+      }),
       new ProgressPlugin(_.throttle(
         function (progress, message) {
           var msg

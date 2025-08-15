@@ -1,0 +1,9 @@
+FROM devicefarmer/stf:latest
+
+# Copy our modified code
+COPY res/auth/mock/views/index.pug /app/res/auth/mock/views/index.pug
+COPY res/build/entry/authmock.entry.js /app/res/auth/mock/scripts/authmock.entry.js
+
+# Set permissions
+RUN chmod 644 /app/res/auth/mock/views/index.pug
+RUN chmod 644 /app/res/auth/mock/scripts/authmock.entry.js

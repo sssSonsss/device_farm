@@ -58,7 +58,8 @@ services:
   stf-triproxy-app:
     image: stf-devicefarm-fixed
     container_name: stf-triproxy-app
-    network_mode: host
+    networks:
+      - stf-network
     command: >
       stf triproxy app 
         --bind-pub "tcp://*:7150" 
@@ -69,7 +70,8 @@ services:
   stf-triproxy-dev:
     image: stf-devicefarm-fixed
     container_name: stf-triproxy-dev
-    network_mode: host
+    networks:
+      - stf-network
     command: >
       stf triproxy dev 
         --bind-pub "tcp://*:7250" 
@@ -221,8 +223,8 @@ services:
         --adb-host adb 
         --public-ip localhost 
         --min-port=15000 --max-port=15100 
-        --connect-push tcp://localhost:7270 
-        --connect-sub tcp://localhost:7250 
+        --connect-push tcp://stf-triproxy-dev:7270 
+        --connect-sub tcp://stf-triproxy-dev:7250 
         --storage-url http://stf-storage-temp:3000/
     restart: unless-stopped
     networks:

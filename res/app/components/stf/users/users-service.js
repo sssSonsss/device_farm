@@ -29,25 +29,25 @@ module.exports = function UsersServiceFactory(
   }
 
   UsersService.getUsersAlertMessage = function() {
-    return $http.get('/api/v1/users/alertMessage')
+    return $http.get(CommonService.getBaseUrl() + '/api/v1/users/alertMessage')
   }
 
   UsersService.getUsers = function(fields) {
-    return $http.get('/api/v1/users?fields=' + fields)
+    return $http.get(CommonService.getBaseUrl() + '/api/v1/users?fields=' + fields)
   }
 
   UsersService.getUser = function(email, fields) {
-    return $http.get('/api/v1/users/' + email + '?fields=' + fields)
+    return $http.get(CommonService.getBaseUrl() + '/api/v1/users/' + email + '?fields=' + fields)
   }
 
   UsersService.removeUser = function(email, filters) {
-    return $http.delete('/api/v1/users/' + email + buildQueryParameters(filters))
+    return $http.delete(CommonService.getBaseUrl() + '/api/v1/users/' + email + buildQueryParameters(filters))
   }
 
   UsersService.removeUsers = function(filters, emails) {
     return $http({
       method: 'DELETE',
-      url: '/api/v1/users' + buildQueryParameters(filters),
+      url: CommonService.getBaseUrl() + '/api/v1/users' + buildQueryParameters(filters),
       headers: {
         'Content-Type': 'application/json;charset=utf-8'
       },
@@ -57,7 +57,7 @@ module.exports = function UsersServiceFactory(
 
   UsersService.updateUserGroupsQuotas = function(email, number, duration, repetitions) {
     return $http.put(
-      '/api/v1/users/' + email +
+      CommonService.getBaseUrl() + '/api/v1/users/' + email +
       '/groupsQuotas?number=' + number +
       '&duration=' + duration +
       '&repetitions=' + repetitions
@@ -66,14 +66,14 @@ module.exports = function UsersServiceFactory(
 
   UsersService.updateDefaultUserGroupsQuotas = function(number, duration, repetitions) {
     return $http.put(
-      '/api/v1/users/groupsQuotas?number=' + number +
+      CommonService.getBaseUrl() + '/api/v1/users/groupsQuotas?number=' + number +
       '&duration=' + duration +
       '&repetitions=' + repetitions
     )
   }
 
   UsersService.createUser = function(name, email) {
-    return $http.post('/api/v1/users/' + email + '?name=' + name)
+    return $http.post(CommonService.getBaseUrl() + '/api/v1/users/' + email + '?name=' + name)
   }
 
   socket.on('user.settings.users.created', function(user) {

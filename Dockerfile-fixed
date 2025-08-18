@@ -147,7 +147,10 @@ COPY --chown=stf:stf bin/stf /app/bin/stf
 # Copy bower_components vào image
 COPY --chown=stf:stf res/bower_components /app/res/bower_components
 
-COPY --chown=stf:stf build /app/static/app/build
+# Copy logo files
+COPY --chown=stf:stf res/common/logo/exports /app/static/app/logo
+
+COPY --chown=stf:stf res/build /app/static/app/build
 
 # Switch to the stf user.
 USER stf

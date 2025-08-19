@@ -6,6 +6,7 @@ var QueryParser = require('./util/query-parser')
 
 module.exports = function DeviceListCtrl(
   $scope
+, $rootScope  // Added $rootScope injection to fix safeApply error
 , DeviceService
 , DeviceColumnService
 , GroupService
@@ -13,7 +14,9 @@ module.exports = function DeviceListCtrl(
 , SettingsService
 , $location
 ) {
-  $scope.tracker = DeviceService.trackAll($scope)
+  // OLD: $scope.tracker = DeviceService.trackAll($scope)
+  // FIX: Use $rootScope instead of $scope for trackAll to access safeApply
+  $scope.tracker = DeviceService.trackAll($rootScope)
   $scope.control = ControlService.create($scope.tracker.devices, '*ALL')
 
   $scope.columnDefinitions = DeviceColumnService

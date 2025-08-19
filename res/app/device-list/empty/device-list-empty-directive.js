@@ -15,9 +15,15 @@ module.exports = function DeviceListEmptyDirective() {
         var newEmpty = !tracker.devices.length
 
         if (oldEmpty !== newEmpty) {
-          scope.safeApply(function() {
+          // FIX: Use scope.$apply instead of scope.safeApply
+          // OLD: scope.safeApply(function() { scope.empty = newEmpty })
+          if (!scope.$$phase) {
+            scope.$apply(function() {
+              scope.empty = newEmpty
+            })
+          } else {
             scope.empty = newEmpty
-          })
+          }
         }
       }
 

@@ -49,7 +49,10 @@ services:
     volumes:
       - "/dev/bus/usb:/dev/bus/usb"
     privileged: true
-    network_mode: host
+    ports:
+      - "5037:5037"
+    networks:
+      - stf-network
 
   # 3. Triproxy Services - Communication bridges (must start before other STF services)
   stf-triproxy-app:
@@ -151,7 +154,7 @@ services:
     command: >
       stf app --port 7105 
         --auth-url http://localhost:7120/auth/mock/ 
-        --websocket-url ws://localhost:3600/ws/ 
+        --websocket-url ws://localhost:3600/ 
         --secret 12341234
     restart: unless-stopped
     networks:
@@ -204,6 +207,24 @@ services:
     networks:
       - stf-network
 
+  # 8. Processor Service - Device registration bridge
+  stf-processor:
+    image: stf-devicefarm-fixed
+    container_name: stf-processor
+    depends_on:
+      stf-migrate:
+        condition: service_completed_successfully
+    environment:
+      - RETHINKDB_PORT_28015_TCP=tcp://rethinkdb:28015
+      - RETHINKDB_ENV_DATABASE=stf
+    command: >
+      stf processor stf-processor 
+        --connect-app-dealer tcp://stf-triproxy-app:7160 
+        --connect-dev-dealer tcp://stf-triproxy-dev:7260
+    restart: unless-stopped
+    networks:
+      - stf-network
+
   # 9. Provider Service - Device management (must start last)
   stf-provider:
     image: stf-devicefarm-fixed
@@ -216,11 +237,13 @@ services:
         condition: service_started
       stf-migrate:
         condition: service_completed_successfully
+      stf-processor:
+        condition: service_started
     ports:
       - "15000-15100:15000-15100"
     command: >
       stf provider --name "local-provider" 
-        --adb-host localhost 
+        --adb-host adb 
         --adb-port 5037 
         --public-ip localhost 
         --allow-remote 

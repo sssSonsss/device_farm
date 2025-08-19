@@ -220,16 +220,36 @@ module.exports = function DeviceServiceFactory($http, socket, EnhanceDeviceServi
     , digest: false
     })
 
-    oboe({
+    // OLD: Simple oboe call without scope context
+    // oboe({
+    //   url: CommonService.getBaseUrl() + '/api/v1/devices',
+    //   withCredentials: true,
+    //   headers: {
+    //     'X-XSRF-TOKEN': document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1] || ''
+    //   }
+    // })
+    //   .node('devices[*]', function(device) {
+    //     tracker.add(device)
+    //   })
+
+    // FIX: Configure oboe with proper scope handling for safeApply
+    var oboeRequest = oboe({
       url: CommonService.getBaseUrl() + '/api/v1/devices',
       withCredentials: true,
       headers: {
         'X-XSRF-TOKEN': document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1] || ''
       }
     })
-      .node('devices[*]', function(device) {
+    
+    oboeRequest.node('devices[*]', function(device) {
+      if ($scope.safeApply) {
+        $scope.safeApply(function() {
+          tracker.add(device)
+        })
+      } else {
         tracker.add(device)
-      })
+      }
+    })
 
     return tracker
   }
@@ -242,16 +262,36 @@ module.exports = function DeviceServiceFactory($http, socket, EnhanceDeviceServi
     , digest: true
     })
 
-    oboe({
+    // OLD: Simple oboe call without scope context  
+    // oboe({
+    //   url: CommonService.getBaseUrl() + '/api/v1/user/devices',
+    //   withCredentials: true,
+    //   headers: {
+    //     'X-XSRF-TOKEN': document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1] || ''
+    //   }
+    // })
+    //   .node('devices[*]', function(device) {
+    //     tracker.add(device)
+    //   })
+
+    // FIX: Configure oboe with proper scope handling for safeApply
+    var oboeRequest = oboe({
       url: CommonService.getBaseUrl() + '/api/v1/user/devices',
       withCredentials: true,
       headers: {
         'X-XSRF-TOKEN': document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1] || ''
       }
     })
-      .node('devices[*]', function(device) {
+    
+    oboeRequest.node('devices[*]', function(device) {
+      if ($scope.safeApply) {
+        $scope.safeApply(function() {
+          tracker.add(device)
+        })
+      } else {
         tracker.add(device)
-      })
+      }
+    })
 
     return tracker
   }

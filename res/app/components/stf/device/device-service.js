@@ -220,7 +220,13 @@ module.exports = function DeviceServiceFactory($http, socket, EnhanceDeviceServi
     , digest: false
     })
 
-    oboe(CommonService.getBaseUrl() + '/api/v1/devices')
+    oboe({
+      url: CommonService.getBaseUrl() + '/api/v1/devices',
+      withCredentials: true,
+      headers: {
+        'X-XSRF-TOKEN': document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1] || ''
+      }
+    })
       .node('devices[*]', function(device) {
         tracker.add(device)
       })
@@ -236,7 +242,13 @@ module.exports = function DeviceServiceFactory($http, socket, EnhanceDeviceServi
     , digest: true
     })
 
-    oboe(CommonService.getBaseUrl() + '/api/v1/user/devices')
+    oboe({
+      url: CommonService.getBaseUrl() + '/api/v1/user/devices',
+      withCredentials: true,
+      headers: {
+        'X-XSRF-TOKEN': document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1] || ''
+      }
+    })
       .node('devices[*]', function(device) {
         tracker.add(device)
       })
@@ -245,7 +257,7 @@ module.exports = function DeviceServiceFactory($http, socket, EnhanceDeviceServi
   }
 
   deviceService.load = function(serial) {
-    return $http.get('/api/v1/devices/' + serial)
+    return $http.get(CommonService.getBaseUrl() + '/api/v1/devices/' + serial)
       .then(function(response) {
         return response.data.device
       })

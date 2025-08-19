@@ -49,10 +49,7 @@ services:
     volumes:
       - "/dev/bus/usb:/dev/bus/usb"
     privileged: true
-    ports:
-      - "5040:5037"
-    networks:
-      - stf-network
+    network_mode: host
 
   # 3. Triproxy Services - Communication bridges (must start before other STF services)
   stf-triproxy-app:
@@ -177,8 +174,8 @@ services:
     command: >
       stf websocket --port 3000 
         --storage-url http://stf-storage-temp:3000/ 
-        --connect-push tcp://localhost:7170 
-        --connect-sub tcp://localhost:7150 
+        --connect-push tcp://stf-triproxy-app:7170 
+        --connect-sub tcp://stf-triproxy-app:7150 
         --secret 12341234
     restart: unless-stopped
     networks:
@@ -198,10 +195,10 @@ services:
       - "3700:3000"
     command: >
       stf api --port 3000 
-        --connect-push tcp://localhost:7170 
-        --connect-sub tcp://localhost:7150 
-        --connect-push-dev tcp://localhost:7270 
-        --connect-sub-dev tcp://localhost:7250 
+        --connect-push tcp://stf-triproxy-app:7170 
+        --connect-sub tcp://stf-triproxy-app:7150 
+        --connect-push-dev tcp://stf-triproxy-dev:7270 
+        --connect-sub-dev tcp://stf-triproxy-dev:7250 
         --secret 12341234
     restart: unless-stopped
     networks:
@@ -211,6 +208,9 @@ services:
   stf-provider:
     image: stf-devicefarm-fixed
     container_name: stf-provider
+    environment:
+      - DEBUG=*
+      - LOG_LEVEL=debug
     depends_on:
       adb:
         condition: service_started
@@ -220,8 +220,10 @@ services:
       - "15000-15100:15000-15100"
     command: >
       stf provider --name "local-provider" 
-        --adb-host adb 
+        --adb-host localhost 
+        --adb-port 5037 
         --public-ip localhost 
+        --allow-remote 
         --min-port=15000 --max-port=15100 
         --connect-push tcp://stf-triproxy-dev:7270 
         --connect-sub tcp://stf-triproxy-dev:7250 

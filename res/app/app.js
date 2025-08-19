@@ -25,12 +25,19 @@ require.ensure([], function(require) {
     require('stf/standalone').name,
     require('stf/common-ui/safe-apply').name
   ])
-    .config(function($routeProvider, $locationProvider) {
+    .config(function($routeProvider, $locationProvider, $httpProvider) {
       $locationProvider.hashPrefix('!')
       $routeProvider
         .otherwise({
           redirectTo: '/devices'
         })
+      
+      // Enable sending cookies with cross-origin requests
+      $httpProvider.defaults.withCredentials = true
+      
+      // Set XSRF header name
+      $httpProvider.defaults.xsrfHeaderName = 'X-XSRF-TOKEN'
+      $httpProvider.defaults.xsrfCookieName = 'XSRF-TOKEN'
     })
 
     .config(function(hotkeysProvider) {

@@ -35,7 +35,7 @@ RUN if [ "$TARGETARCH" = "amd64" ]; then \
     apt-get -y install wget python3 build-essential ca-certificates && \
     cd /tmp && \
     wget --progress=dot:mega \
-      https://nodejs.org/dist/v22.11.0/node-v22.11.0-linux-x64.tar.xz && \
+      https://nodejs.org/dist/v18.20.5/node-v18.20.5-linux-x64.tar.xz && \
     tar -xJf node-v*.tar.xz --strip-components 1 -C /usr/local && \
     rm node-v*.tar.xz && \
     npm install -g bower && \
@@ -100,7 +100,7 @@ RUN if [ "$TARGETARCH" = "arm64" ]; then \
     apt-get -y install wget python3 build-essential ca-certificates && \
     cd /tmp && \
     wget --progress=dot:mega \
-      https://nodejs.org/dist/v22.11.0/node-v22.11.0-linux-arm64.tar.xz && \
+      https://nodejs.org/dist/v18.20.5/node-v18.20.5-linux-arm64.tar.xz && \
     tar -xJf node-v*.tar.xz --strip-components 1 -C /usr/local && \
     rm node-v*.tar.xz && \
     npm install -g bower && \

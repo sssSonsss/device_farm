@@ -232,6 +232,8 @@ services:
     environment:
       - DEBUG=*
       - LOG_LEVEL=debug
+      - STF_ADMIN_EMAIL=sonnguyenh2398@gmail.com
+      - STF_ADMIN_NAME=sonnh
     depends_on:
       adb:
         condition: service_started

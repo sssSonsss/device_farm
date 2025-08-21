@@ -16,7 +16,8 @@ module.exports = function ScreenshotsCtrl($scope) {
 
   $scope.takeScreenShot = function() {
     $scope.control.screenshot().then(function(result) {
-      $scope.safeApply(function() {
+      // FIX: Use $evalAsync for HTTP responses instead of safeApply
+      $scope.$evalAsync(function() {
         $scope.screenshots.unshift(result)
       })
     })

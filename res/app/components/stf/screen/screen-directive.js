@@ -290,7 +290,8 @@ module.exports = function DeviceScreenDirective(
             if (message.data instanceof Blob) {
               if (shouldUpdateScreen()) {
                 if (scope.displayError) {
-                  scope.safeApply(function() {
+                  // FIX: Use $evalAsync for WebSocket events instead of safeApply
+                  scope.$evalAsync(function() {
                     scope.displayError = false
                   })
                 }
@@ -343,7 +344,8 @@ module.exports = function DeviceScreenDirective(
               applyQuirks(JSON.parse(message.data.substr('start '.length)))
             }
             else if (message.data === 'secure_on') {
-              scope.safeApply(function() {
+              // FIX: Use $evalAsync for WebSocket events instead of safeApply
+              scope.$evalAsync(function() {
                 scope.displayError = 'secure'
               })
             }

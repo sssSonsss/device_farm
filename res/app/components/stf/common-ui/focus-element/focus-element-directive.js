@@ -14,7 +14,10 @@ module.exports = function focusElementDirective($parse, $timeout) {
 
       element.bind('blur', function() {
         if (model && model.assign) {
-          scope.safeApply(model.assign(scope, false))
+          // FIX: Use $evalAsync instead of safeApply for proper digest cycle management
+          scope.$evalAsync(function() {
+            model.assign(scope, false)
+          })
         }
       })
     }

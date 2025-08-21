@@ -6,7 +6,8 @@ module.exports = function DeviceSettingsCtrl($scope, $timeout) {
   function getWifiStatus() {
     if ($scope.control) {
       $scope.control.getWifiStatus().then(function(result) {
-        $scope.safeApply(function() {
+        // FIX: Use $evalAsync for HTTP responses instead of safeApply
+        $scope.$evalAsync(function() {
           $scope.wifiEnabled = (result.lastData === 'wifi_enabled')
         })
       })
@@ -26,7 +27,8 @@ module.exports = function DeviceSettingsCtrl($scope, $timeout) {
       $scope.bluetoothPending = true
       $scope.control.getBluetoothStatus()
         .then(function(result) {
-          $scope.safeApply(function() {
+          // FIX: Use $evalAsync for HTTP responses instead of safeApply
+          $scope.$evalAsync(function() {
             $scope.bluetoothEnabled = (result.lastData === 'bluetooth_enabled')
           })
       })
@@ -67,7 +69,8 @@ module.exports = function DeviceSettingsCtrl($scope, $timeout) {
   function getRingerMode() {
     if ($scope.control) {
       $scope.control.getRingerMode().then(function(result) {
-        $scope.safeApply(function() {
+        // FIX: Use $evalAsync for HTTP responses instead of safeApply
+        $scope.$evalAsync(function() {
           $scope.ringerMode = result.body
         })
       })

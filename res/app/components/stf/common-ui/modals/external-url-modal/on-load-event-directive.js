@@ -3,7 +3,10 @@ module.exports = function() {
   return function(scope, element, attrs) {
     scope.$watch(attrs.pageVisible, function() {
           element.bind('load', function() {
-      scope.safeApply(attrs.pageLoad)
+      // FIX: Use $evalAsync for DOM load events instead of safeApply
+      scope.$evalAsync(function() {
+        scope.$eval(attrs.pageLoad)
+      })
     })
     })
   }

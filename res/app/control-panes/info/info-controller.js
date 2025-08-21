@@ -8,7 +8,8 @@ module.exports = function InfoCtrl($scope, LightboxImageService) {
   var getSdStatus = function() {
     if ($scope.control) {
       $scope.control.getSdStatus().then(function(result) {
-        $scope.safeApply(function() {
+        // FIX: Use $evalAsync for HTTP responses instead of safeApply
+        $scope.$evalAsync(function() {
           $scope.sdCardMounted = (result.lastData === 'sd_mounted')
         })
       })

@@ -40,7 +40,8 @@ module.exports = function SocketStateDirectiveFactory(
           break
         }
 
-        scope.safeApply(function() {
+        // FIX: Use $evalAsync for socket state changes instead of safeApply
+        scope.$evalAsync(function() {
           scope.socketState = state
         })
       }

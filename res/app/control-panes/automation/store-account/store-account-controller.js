@@ -1,5 +1,13 @@
-// TODO: Sử dụng array syntax để inject dependencies đúng cách
-module.exports = ['$scope', 'ngTableParams', '$timeout', function StoreAccountCtrl($scope, ngTableParams, $timeout) {
+// TODO: Sử dụng optional injection để ngTableParams không bắt buộc
+module.exports = ['$scope', '$timeout', '$injector', function StoreAccountCtrl($scope, $timeout, $injector) {
+  // Optional dependency - chỉ sử dụng nếu có
+  var ngTableParams = null
+  try {
+    ngTableParams = $injector.get('ngTableParams')
+  } catch (e) {
+    // ngTableParams không có - không sao cả
+    console.log('ngTableParams not available - using basic table functionality')
+  }
   // TODO: This should come from the DB
   $scope.currentAppStore = 'google-play-store'
   $scope.deviceAppStores = {
@@ -43,7 +51,8 @@ module.exports = ['$scope', 'ngTableParams', '$timeout', function StoreAccountCt
     var storeAccountType = $scope.deviceAppStores[$scope.currentAppStore].package
     if ($scope.control) {
       $scope.control.getAccounts(storeAccountType).then(function(result) {
-        $scope.safeApply(function() {
+        // FIX: Use $evalAsync for HTTP responses instead of safeApply
+        $scope.$evalAsync(function() {
           $scope.accountsList = result.body
         })
       })
@@ -51,5 +60,10 @@ module.exports = ['$scope', 'ngTableParams', '$timeout', function StoreAccountCt
   }
 
   getAccounts()
-  // TODO: Đã sử dụng array syntax để inject ngTableParams đúng cách
+  
+  // TODO: Optional dependency pattern - ngTableParams có thể sử dụng sau này nếu cần
+  if (ngTableParams) {
+    // Có thể implement table features advanced nếu cần
+    console.log('ngTableParams available for advanced table features')
+  }
 }]

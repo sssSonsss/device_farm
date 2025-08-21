@@ -1,4 +1,5 @@
-module.exports = function StoreAccountCtrl($scope, ngTableParams, $timeout) {
+// TODO: Sử dụng array syntax để inject dependencies đúng cách
+module.exports = ['$scope', 'ngTableParams', '$timeout', function StoreAccountCtrl($scope, ngTableParams, $timeout) {
   // TODO: This should come from the DB
   $scope.currentAppStore = 'google-play-store'
   $scope.deviceAppStores = {
@@ -50,4 +51,5 @@ module.exports = function StoreAccountCtrl($scope, ngTableParams, $timeout) {
   }
 
   getAccounts()
-}
+  // TODO: Đã sử dụng array syntax để inject ngTableParams đúng cách
+}]

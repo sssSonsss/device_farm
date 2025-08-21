@@ -12,3 +12,26 @@
 2025-08-08T02:57:14.433257800 0.046294s notice: Listening on driver addresses: 127.0.0.1, 10.42.0.9, ::1, fe80::7cb9:6cff:fe4d:7d44%2
 2025-08-08T02:57:14.433266209 0.046303s notice: Listening on http addresses: 127.0.0.1, 10.42.0.9, ::1, fe80::7cb9:6cff:fe4d:7d44%2
 2025-08-08T02:57:14.433273495 0.046310s notice: Server ready, "stf_rethinkdb_7bd775994b_578lk_b6p" 683227d8-6f93-4749-a5aa-1a882ce402a4
+2025-08-20T17:33:11.708145432 0.060065s notice: Recursively removing directory /data/rethinkdb_data/tmp
+2025-08-20T17:33:11.724452021 0.076369s notice: Running rethinkdb 2.4.2~0bullseye (GCC 10.2.1)...
+2025-08-20T17:33:11.731497714 0.083415s notice: Running on Linux 6.14.0-27-generic x86_64
+2025-08-20T17:33:11.731583593 0.083500s notice: Loading data from directory /data/rethinkdb_data
+2025-08-20T17:33:11.755105370 0.107022s info: Cache size is set to 2048 MB
+2025-08-20T17:33:11.766159455 0.118076s notice: Listening for intracluster connections on port 29015
+2025-08-20T17:33:11.783677367 0.135594s notice: Listening for client driver connections on port 28015
+2025-08-20T17:33:11.783760376 0.135677s notice: Listening for administrative HTTP connections on port 8080
+2025-08-20T17:33:11.783768422 0.135685s notice: Listening on cluster addresses: 127.0.0.1, 10.42.0.24, ::1, fe80::2c61:d6ff:fe29:1fdd%2
+2025-08-20T17:33:11.783776164 0.135693s notice: Listening on driver addresses: 127.0.0.1, 10.42.0.24, ::1, fe80::2c61:d6ff:fe29:1fdd%2
+2025-08-20T17:33:11.783781322 0.135698s notice: Listening on http addresses: 127.0.0.1, 10.42.0.24, ::1, fe80::2c61:d6ff:fe29:1fdd%2
+2025-08-20T17:33:11.783786324 0.135703s notice: Server ready, "stf_rethinkdb_7bd775994b_578lk_b6p" 683227d8-6f93-4749-a5aa-1a882ce402a4
+2025-08-21T02:54:48.513041230 0.080258s notice: Running rethinkdb 2.4.2~0bullseye (GCC 10.2.1)...
+2025-08-21T02:54:48.526098360 0.093316s notice: Running on Linux 6.14.0-28-generic x86_64
+2025-08-21T02:54:48.526142231 0.093359s notice: Loading data from directory /data/rethinkdb_data
+2025-08-21T02:54:48.553071229 0.120288s info: Cache size is set to 2048 MB
+2025-08-21T02:54:48.558098963 0.125315s notice: Listening for intracluster connections on port 29015
+2025-08-21T02:54:48.566413124 0.133629s notice: Listening for client driver connections on port 28015
+2025-08-21T02:54:48.567238975 0.134455s notice: Listening for administrative HTTP connections on port 8080
+2025-08-21T02:54:48.567247954 0.134464s notice: Listening on cluster addresses: 127.0.0.1, 10.42.0.32, ::1, fe80::14db:90ff:fee9:6ca%2
+2025-08-21T02:54:48.567260089 0.134476s notice: Listening on driver addresses: 127.0.0.1, 10.42.0.32, ::1, fe80::14db:90ff:fee9:6ca%2
+2025-08-21T02:54:48.567267562 0.134484s notice: Listening on http addresses: 127.0.0.1, 10.42.0.32, ::1, fe80::14db:90ff:fee9:6ca%2
+2025-08-21T02:54:48.567274916 0.134491s notice: Server ready, "stf_rethinkdb_7bd775994b_578lk_b6p" 683227d8-6f93-4749-a5aa-1a882ce402a4
